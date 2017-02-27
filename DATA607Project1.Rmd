@@ -1,0 +1,95 @@
+---
+title: "DATA607Project1"
+author: "jim lung"
+date: "2017¦~2¤ë25¤é"
+output: html_document
+---
+
+Project 1
+
+
+```{r }
+library(readr)
+library(stringr)
+data <- readLines("~/tournamentinfo.txt")
+data[1:10]
+
+```
+
+Remove separated lines:
+
+```{r }
+
+line_sign <-str_detect(data,"\\-----")
+textdata<-data[!line_sign]
+
+```
+
+Remove 1 to 2 line, and "|" separator:
+```{r }
+
+textdata1<-textdata[3:length(textdata)]
+textdata1<-str_split(textdata1,"\\|")
+textdata1
+```
+
+Extract the name
+```{r }
+
+ext_data<-str_extract_all(textdata1,"[[:alpha:][:blank:][:alpha:]-?]{3,}")
+names_loc<-str_detect(unlist(ext_data),"[[:alpha:]]{3,}")
+names<-unlist(ext_data)[names_loc]
+names
+```
+
+Extract the state
+```{r }
+
+state_location<-str_detect(unlist(ext_data),"[[:alpha:]]{2}")
+state<-unlist(ext_data)[(state_location)&(!names_loc)]
+state
+```
+Extract the point
+```{r }
+num_data<-str_extract_all(textdata1,"\\d\\.\\d")
+point_loc<-str_detect(unlist(num_data),"\\d\\.\\d")
+pts<-unlist(num_data)[(point_loc)]
+pts
+
+```
+
+Extract the Pre-rating
+```{r }
+rtg_data<-str_extract_all(textdata1,"(( \\:)|(\\>))?.?\\d{1,}P*\\.?")
+pre_loc<-str_detect(unlist(rtg_data),"\\b\\d{3,4}P?\\b")
+post_loc<-str_detect(unlist(rtg_data),"\\>.?\\b\\d{3,4}P?\\b")
+pre_rating<-unlist(rtg_data)[(pre_loc)&(!post_loc)]
+pre_rating<-str_replace_all(pre_rating,"P","")
+pre_rating
+```
+
+Calculate the Opponent
+```{r }
+
+pre_rating <- str_replace_all(str_trim(unlist(str_extract_all(unlist(data1), "R: [[:digit:] ]*"))), "R: ", "")
+x <- str_sub(unlist(data1), start = 48, end = 89)[c(seq(1, length(unlist(data1)), by = 3))]
+opp_rating <- str_extract_all(x, "( |\\d){4}")
+opp_rating <- as.numeric(unlist(opp_rating))
+opp_rating <- as.numeric(pre_rating[opp_rating]) 
+opp_rating_mtx <- matrix(opp_rating, nrow=7, ncol=64)
+opp_rating_avg <- colMeans(opp_rating_mtx, na.rm=T)
+opp_rating_avg
+```
+
+
+```{r }
+
+rating <- data.frame(names, state, pts, pre_rating, opp_rating_avg)
+rating
+```
+
+```{r }
+
+write.table(rank, file = "rating.csv", sep = ",", row.names = FALSE)
+
+```
