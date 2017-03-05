@@ -1,0 +1,98 @@
+---
+title: "DATA607assignment5"
+author: "jim lung"
+date: "3-3-2017"
+output: html_document
+---
+Using "tidyr" and "dplyr" functions
+
+```{r }
+library(stringr)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+```
+
+Read and input data:
+
+```{r }
+airline <-read.csv("~/airlinedelays.csv")
+
+airlinename <- airline %>% rename(airline=X, arrival=X.1, "Los Angeles"=Los.Angeles, "San Diego"=San.Diego, "San Francisco"=San.Francisco)
+airlinename
+```
+Filling the blank record:
+
+```{r }
+for(i in 1:nrow(airlinename)){
+  if(i %% 2 ==0){
+    airlinename$airline[i] <- airlinename$airline[i-1]
+  }
+}
+airlinename
+```
+
+
+```{r }
+
+airline1 <-airlinename %>% gather(airport, time,  3:7 )
+airline1
+```
+```{r }
+airline2 <-airline1
+airlineontime<-airline2 %>% filter(airline2$arrival == "on time")
+airlineontime
+```
+```{r }
+mean(airlineontime$time)
+
+```
+
+
+```{r }
+airlineontime %>% summarise(Min = min(airlineontime$time, na.rm=TRUE),
+                     Median = median(airlineontime$time, na.rm=TRUE),
+                     Mean = mean(airlineontime$time, na.rm=TRUE),
+                     Var = var(airlineontime$time, na.rm=TRUE),
+                     SD = sd(airlineontime$time, na.rm=TRUE),
+                     Max = max(airlineontime$time, na.rm=TRUE),
+                     N = n())
+
+```
+
+```{r }
+airline3 <-airline1
+airlinedelayed<-airline3 %>% filter(airline3$arrival == "delayed")
+airlinedelayed
+
+
+```
+
+```{r }
+mean(airlinedelayed$time)
+
+```
+
+```{r }
+airlinedelayed %>% summarise(Min = min(airlinedelayed$time, na.rm=TRUE),
+                     Median = median(airlinedelayed$time, na.rm=TRUE),
+                     Mean = mean(airlinedelayed$time, na.rm=TRUE),
+                     Var = var(airlinedelayed$time, na.rm=TRUE),
+                     SD = sd(airlinedelayed$time, na.rm=TRUE),
+                     Max = max(airlinedelayed$time, na.rm=TRUE),
+                     N = n())
+
+```
+
+
+
+```{r }
+
+
+
+ggplotly(ggplot(airlinedelayed,aes(x=airport,y=time))+geom_bar(aes(fill=airline),stat="identity",position="dodge")+ylab("Time of Delayed Flights")+ggtitle("Delayed Flights by Region"))
+
+```
+```
