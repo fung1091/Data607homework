@@ -1,0 +1,161 @@
+---
+title: "DATA607Project2"
+author: "jim lung"
+date: "03-11-2017"
+output: html_document
+---
+
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(knitr)
+library(ggplot2)
+library(plotly)
+
+```
+
+Wide data set 1 - New_York_City_Leading_Causes_of_Death
+
+The source: https://data.cityofnewyork.us/Health/New-York-City-Leading-Causes-of-Death/jb7j-dtam/data
+
+
+```{r }
+causeofdeath<-read.csv("~/New_York_City_Leading_Causes_of_Death.csv")
+glimpse(causeofdeath)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r }
+library(stringr)
+causedeath <- causeofdeath %>% rename("Leading_Cause"=Leading.Cause, "Race_Ethnicity"=Race.Ethnicity, "Death_Rate"=Death.Rate, "Age_Adjusted_Death_Rate"=Age.Adjusted.Death.Rate)
+
+
+head(causedeath)
+
+```
+
+```{r }
+
+cause2012<- causedeath %>%
+  filter(Year == "2012") %>%
+  group_by(Year, Race_Ethnicity) %>%
+  select(Year, Sex, Leading_Cause, Race_Ethnicity, Deaths,Death_Rate, Age_Adjusted_Death_Rate)
+head(cause2012)
+
+```
+
+```{r }
+
+kable(causedeath %>% 
+           select(Year, Sex, Leading_Cause, Death_Rate) %>% 
+           group_by(Year, Sex) %>% 
+           select(Year, Sex, Leading_Cause, Death_Rate) %>% 
+          arrange(Death_Rate) %>%
+          top_n(1))
+
+```
+
+```{r }
+library(plotly)
+
+ggplotly(ggplot(cause2012,aes(x=Race_Ethnicity,y=Age_Adjusted_Death_Rate))+geom_bar(aes(fill=Sex),stat="identity",position="dodge")+ylab("Death Rate")+ggtitle("Race_Ethnicity"))
+
+
+```
+
+
+Wide data set 2 - Total world population
+
+The source: http://data.worldbank.org/indicator/SP.POP.TOTL
+
+```{r }
+population<-read.csv("~/population.csv", skip = 4)
+glimpse(population)
+```
+
+```{r }
+population$Indicator.Name<-NULL
+population$Indicator.Code<-NULL
+population$X<-NULL
+population$X2016<-NULL
+population <- population[complete.cases(population), ] 
+head(population)
+
+```
+
+Using Tidyr function:
+```{r }
+tpopulation <- population %>%
+                      gather(group, "population", -Country.Code, -Country.Name) %>% 
+                      separate(group, c("X", "Year"), sep="X") %>% 
+                      select(-X) %>% 
+                      arrange(Country.Code, Year)
+
+tpopulation$Year <- as.numeric(tpopulation$Year)
+
+tpopulation <- as.data.frame(tpopulation)
+
+tpopulation
+```
+Analysis for max and min of population:
+```{r }
+population_percent <- tpopulation %>%
+                   na.omit() %>%   #omit the na value
+                   group_by(Country.Code) %>% #Group country for comparing
+                   mutate(min_year = min(Year), max_year = max(Year)) %>%  #calculate min and max number
+                   filter(Year == min_year | Year == max_year) %>%  #Year can be "min" or "max"
+                   mutate(rn = str_c("Y", row_number())) %>% # labelling M1 and M2 for min and max
+                   select(Country.Name, Country.Code, population, rn) %>%
+                   spread(rn, population) %>%      # Separate M1 and M2 for min and max
+                   rename(Min.Year=Y1, Max.Year=Y2) %>%
+                   mutate(Percent.Change = round(((Max.Year - Min.Year)/Min.Year) * 100, 2)) 
+
+
+population_percent <- as.data.frame(population_percent)
+population_percent
+
+```
+
+Summary of max and min percentage change:
+
+```{r }
+comparecountry <- filter(population_percent, Percent.Change==min(Percent.Change) |Percent.Change==max(Percent.Change))
+
+kable(comparecountry)
+
+```
+
+
+Wide data set 3 - Lottery-Cash-4-Life-Winning-Numbers
+
+The source: https://data.ny.gov/Government-Finance/Lottery-Cash-4-Life-Winning-Numbers-Beginning-2014/kwxv-fwze
+
+
+```{r }
+lottery<-read.csv("~/lottery.csv")
+glimpse(lottery)
+```
+
+```{r }
+dlottery <- lottery %>%
+                      separate(Draw.Date, c("Month","Day","Year"), sep="/") %>%
+                      separate(Winning.Numbers, c("N1","N2","N3","N4","N5")) %>%
+                      gather(lottery,"Number", 4:9) %>%
+                      arrange(Year,Month,Day)
+
+dlottery$Month <- as.numeric(dlottery$Month)
+dlottery$Day <- as.numeric(dlottery$Day)
+dlottery$Year <- as.numeric(dlottery$Year)
+
+dlottery <- as.data.frame(dlottery)
+
+dlottery
+```
+
+
+```{r }
+library(plotly)
+ggplot(dlottery, aes(x = Year, y=Number)) + coord_flip() + geom_bar(stat="identity") + xlab("Year") + ylab("Number") 
+```
