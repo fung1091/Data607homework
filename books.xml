@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<books>
+    <book id="1">
+        <BookTitle>Uncharted: Big Data as a Lens on Human Culture</BookTitle>
+        <Author>Erez Aiden, JEAN-BAPTISTE MICHEL</Author>
+        <Publisher>RIVERHEAD BOOKS</Publisher>
+        <PublishedDate>DECEMBER 2013</PublishedDate>
+        <ISBN10>1594487456</ISBN10>
+    </book>
+    <book id="2">
+        <BookTitle>Clinical Data-Mining</BookTitle>
+        <Author>Irwin Epstein</Author>
+        <Publisher>OXFORD UNIVERSITY PRESS</Publisher>
+        <PublishedDate>NOVEMBER 2009</PublishedDate>
+        <ISBN10>019533552X</ISBN10>
+    </book>
+    <book id="3">
+        <BookTitle>Presenting Data Effectively</BookTitle>
+        <Author>Stephanie D. H. Evergreen</Author>
+        <Publisher>SAGE PUBNS</Publisher>
+        <PublishedDate>OCTOBER 2013</PublishedDate>
+        <ISBN10>1452257361</ISBN10>
+    </book>
+    <book id="4">
+        <BookTitle>Data Warehousing in the Age of Big Data</BookTitle>
+        <Author>KRISH KRISHNAN</Author>
+        <Publisher>ELSEVIER SCIENCE LTD</Publisher>
+        <PublishedDate>MAY 2013</PublishedDate>
+        <ISBN10>0124058914</ISBN10>
+    </book>
+</books>
