@@ -1,0 +1,23 @@
+"https://www.indeed.com"	"X2"	"X3"
+"1"	"skills"	"Group"	"Number of appearance"
+"2"	"Python"	"programming"	NA
+"3"	"analytics"	"mathematic"	NA
+"4"	"machine learning"	"programming"	NA
+"5"	"programming"	"programming"	NA
+"6"	"team"	"Cooperation"	NA
+"7"	"statistics"	"mathematic"	NA
+"8"	"SQL"	"programming"	NA
+"9"	"communication"	"Cooperation"	NA
+"10"	"big data"	"programming"	NA
+"11"	"design"	"visualization"	NA
+"12"	"Hadoop"	"programming"	NA
+"13"	"Java"	"programming"	NA
+"14"	"research"	"Cooperation"	NA
+"15"	"creative"	"Cooperation"	NA
+"16"	"math"	"mathematic"	NA
+"17"	"MATLAB"	"programming"	NA
+"18"	"predictive analytics"	"programming"	NA
+"19"	"SAS"	"programming"	NA
+"20"	"R"	"programming"	NA
+"21"	"Modelling"	"visualization"	NA
+"22"	"C++"	"programming"	NA
