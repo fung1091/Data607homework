@@ -1,0 +1,196 @@
+---
+title: "DATA607assignment7"
+author: "jim lung"
+date: "03-15-2017"
+output: html_document
+---
+
+Assignment 7
+
+Pick three of your favorite books on one of your favorite subjects. At least one of the books should have more than one author. For each book, include the title, authors, and two or three other attributes that you find interesting.
+
+Take the information that you¡¦ve selected about these three books, and separately create three files which store the book¡¦s information in HTML (using an html table), XML, and JSON formats (e.g. ¡§books.html¡¨, ¡§books.xml¡¨, and ¡§books.json¡¨). To help you better understand the different file structures, I¡¦d prefer that you create each of these files ¡§by hand¡¨ unless you¡¦re already very comfortable with the file formats.
+
+Write R code, using your packages of choice, to load the information from each of the three sources into separate R data frames. Are the three data frames identical?
+
+Your deliverable is the three source files and the R code. If you can, package your assignment solution up into an .Rmd file and publish to rpubs.com. [This will also require finding a way to make your three text files accessible from the web].
+
+
+```{r }
+#load package
+library(XML)
+library(RCurl)
+library(DT)
+library(bitops)
+library(stringr)
+library(rjson)
+
+```
+
+Load Html from Github:
+```{r }
+
+#download file from:
+# https://raw.githubusercontent.com/fung1091/Data607homework/master/books.html
+htmlURL <- "https://raw.githubusercontent.com/fung1091/Data607homework/master/books.html"
+htmltxt <- getURL(url=htmlURL)
+
+```
+
+Created html by hand:
+
+<!DOCTYPE html>
+    <head>
+        <title>books</title>
+    </head>
+    <body>
+        <table>
+            <tr>    <th>BookTitle</th> <th>Author</th> <th>Publisher</th> <th>PublishedDate</th> <th>ISBN10</th>    </tr>
+            <tr>    <td>Uncharted: Big Data as a Lens on Human Culture</td> <td>Erez Aiden, JEAN-BAPTISTE MICHEL</td> <td>RIVERHEAD BOOKS</td> <td>DECEMBER 2013</td> <td>1594487456</td>    </tr>
+            <tr>    <td>Clinical Data-Mining</td> <td>Irwin Epstein</td> <td>OXFORD UNIVERSITY PRESS</td> <td>NOVEMBER 2009</td> <td>019533552X</td> </tr>
+            <tr>    <td>Presenting Data Effectively</td> <td>Stephanie D. H. Evergreen</td> <td>SAGE PUBNS</td> <td>OCTOBER 2013</td> <td>1452257361</td> </tr>
+            <tr>    <td>Data Warehousing in the Age of Big Data</td> <td>KRISH KRISHNAN</td> <td>ELSEVIER SCIENCE LTD</td> <td>MAY 2013</td> <td>0124058914</td>  </tr>       
+        </table>
+    </body>
+</html>
+
+
+```{r }
+
+#parse file
+html_parse<-htmlParse(htmltxt, validate = F)
+
+#create data frame
+html_table<-readHTMLTable(html_parse, stringsAsFactors = FALSE)
+html_table<-html_table[[1]]
+
+#view
+datatable(html_table)
+```
+
+
+XML
+
+Load XML from Github:
+```{r }
+xmlURL <- "https://raw.githubusercontent.com/fung1091/Data607homework/master/books.xml"
+xmltxt <- getURL(url=xmlURL)
+
+
+```
+
+Created xml by hand:
+```{r }
+
+###<?xml version="1.0" encoding="ISO-8859-1"?>
+###<books>
+###   <book id="1">
+###        <BookTitle>Uncharted: Big Data as a Lens on Human Culture</BookTitle>
+###        <Author>Erez Aiden, JEAN-BAPTISTE MICHEL</Author>
+###        <Publisher>RIVERHEAD BOOKS</Publisher>
+###        <PublishedDate>DECEMBER 2013</PublishedDate>
+###        <ISBN10>1594487456</ISBN10>
+###    </book>
+###    <book id="2">
+###        <BookTitle>Clinical Data-Mining</BookTitle>
+###        <Author>Irwin Epstein</Author>
+###        <Publisher>OXFORD UNIVERSITY PRESS</Publisher>
+###        <PublishedDate>NOVEMBER 2009</PublishedDate>
+###        <ISBN10>019533552X</ISBN10>
+###    </book>
+###    <book id="3">
+###        <BookTitle>Presenting Data Effectively</BookTitle>
+###        <Author>Stephanie D. H. Evergreen</Author>
+###        <Publisher>SAGE PUBNS</Publisher>
+###        <PublishedDate>OCTOBER 2013</PublishedDate>
+###        <ISBN10>1452257361</ISBN10>
+###    </book>
+###    <book id="4">
+###       <BookTitle>Data Warehousing in the Age of Big Data</BookTitle>
+###        <Author>KRISH KRISHNAN</Author>
+###        <Publisher>ELSEVIER SCIENCE LTD</Publisher>
+###        <PublishedDate>MAY 2013</PublishedDate>
+###        <ISBN10>0124058914</ISBN10>
+###    </book>
+###</books>
+
+```
+
+
+
+
+```{r }
+library(XML)
+library(DT)
+#download file from:
+# https://raw.githubusercontent.com/fung1091/Data607homework/master/books.xml
+
+#parse file
+xml_parse<-xmlParse(xmltxt, validate = F)
+
+#create data frame
+xmltable<-xmlToDataFrame(xml_parse, stringsAsFactors = FALSE)
+
+#view
+datatable(xmltable)
+```
+Json
+
+Load Json file from github:
+
+```{r }
+#download file from:
+# https://raw.githubusercontent.com/fung1091/Data607homework/master/books.json
+
+jsonURL <- "https://raw.githubusercontent.com/fung1091/Data607homework/master/books.json"
+jsontxt <- getURL(url=jsonURL)
+
+```
+
+Create json by hand:
+```{r }
+###{"books" :[
+###    {
+###    "BookTitle" : "Uncharted: Big Data as a Lens on Human Culture",
+###    "Author" : "Erez Aiden, JEAN-BAPTISTE MICHEL",
+###    "Publisher" : "RIVERHEAD BOOKS",
+###    "PublishedDate" : "DECEMBER 2013",
+###    "ISBN10" : "1594487456"  },
+###    {
+###    "BookTitle" : "Clinical Data-Mining",
+###    "Author" : "Irwin Epstein",
+###    "Publisher" : "OXFORD UNIVERSITY PRESS",
+###    "PublishedDate" : "NOVEMBER 2009",
+###    "ISBN10" : "019533552X"
+###    },
+###    {
+###    "BookTitle" : "Presenting Data Effectively",
+###    "Author" : "Stephanie D. H. Evergreen",
+###    "Publisher" : "SAGE PUBNS",
+###    "PublishedDate" : "OCTOBER 2013",
+###    "ISBN10" : "1452257361"
+###    },
+###    {
+###    "BookTitle" : "Data Warehousing in the Age of Big Data",
+###    "Author" : "KRISH KRISHNAN",
+###    "Publisher" : "ELSEVIER SCIENCE LTD",
+###    "PublishedDate" : "MAY 2013",
+###    "ISBN10" : "0124058914"
+###    }]
+###}
+
+```
+
+
+
+
+```{r }
+#parse file from local location
+json_parse <- fromJSON(jsontxt)
+
+#create data frame
+json_table<-do.call("rbind", lapply(json_parse[[1]], data.frame, stringsAsFactors = FALSE))
+
+#view
+datatable(json_table)
+```
