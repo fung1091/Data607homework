@@ -1,0 +1,109 @@
+---
+title: "607countproject"
+author: "jim lung"
+date: "2017¦~3¤ë20¤é"
+output: html_document
+---
+
+```{r }
+library(RCurl)
+library(stringr)
+library(bitops)
+```
+
+
+```{r }
+#jobskills <- readLines("https://raw.githubusercontent.com/jmehta753/MSDA_JM/master/DATA607/Project3/JobSkills.txt")
+jobskills <- c("Python","R","analytics","machine learning","programming","team","statistics","SQL","sql","communication","big data","design","Hadoop","Java","research","creative","math","mathematic","MATLAB","predictive analytics","SAS","Modelling","C++","builders at heart","experienced","outgoing","self-motivated professional","creating analytics programs","thought leadership" )
+
+
+jobskills
+
+
+```
+
+
+```{r }
+text <- c("
+
+Our Melbourne team is seeking a Data Scientist/Data Analyst Consultant to join our expanding team.
+
+At Readify, we help Australia's biggest organisations, government departments and not for profits manage and navigate shifts in technology. We only employ technically brilliant people to deliver custom Business Intelligence solutions, data platform and analytics services, application development, software deployment, IT consulting and managed services.
+
+Our staff are industry superstars who regularly present locally and around the world ¡V a key reason Telstra recently acquired Readify!
+
+About the Role:
+
+As a Data Scientist/Data Analyst Consultant, you'll provide our clients with an extremely high level of technical expertise regarding Data Analytics and Visualisation solutions, using SQL Server, Teradata, Oracle and PowerBI, Tableau, QlikView.
+
+You'll also be helping our customers utilising NoSQL offerings and big data solutions to optimise the design and implementation of their solutions. You'll be involved in the full lifecycle of BI and Data projects from attending client briefings, translating business requirements into the architecture and design of solutions, and following through to their implementation and deployment.
+
+You'll also be doing highly technical work assisting our clients in optimising the scalability and performance of their existing solutions, and expanding on those solutions to add greater insights, visualisation and understanding of the data they are storing.
+
+With a passion for technology, business and problem solving, you'll have the opportunity to develop your skills with the latest, cutting edge Microsoft and NoSQL technologies whilst working alongside and learning from talented Microsoft Most Valuable Professionals (MVPs).
+
+As a Data Scientist/Data Analyst Consultant, your duties will include:
+
+Being proficient in all pillars of the Microsoft data platform offering, including Azure technologies.
+Becoming proficient in a range of NoSQL based offerings, such as graph databases and Azure HDInsights, and modelling and building solutions using those offerings.
+Configuring, Developing, Optimising, Testing, and Documenting analytical solutions developed and/or infrastructure implemented.
+Gathering Requirements from Business and IT Stakeholders.
+Delivering and installing suitable solutions for customers.
+Actively participating in local technical forums, such as User Groups, involving Microsoft and their wider Developer community.
+About You:
+
+You should have proven expertise with Microsoft data platform products in a similar role as a Data Scientist/Data Analyst, BI Consultant, SQL Server Developer or Architect, and you should have some level of working knowledge around big data solutions.
+
+Ideally your skillset will also include:
+
+Advanced T-SQL and SQL Server 2012+, including Azure SQL
+Advanced R and/or Python skills
+Proven proficiency in statistics and statistical modelling
+Exposure to and understanding of Pig, Hive and Jaql
+PowerBI (Highly Beneficial)
+Tableau (Highly Beneficial)
+QlikView (Beneficial)
+SSAS Tabular Modelling (Beneficial)
+Data Analysis Expressions (DAX) (Beneficial)
+Azure HDInsights and/or Hadoop and related technologies (Highly Beneficial)
+Machine learning and/or data mining (Beneficial)
+IoT, data ingestion, and stream analytics (Beneficial)
+Working as part of a Scrum development team
+About our Culture:
+
+Our people enjoy working at Readify because we stay at the forefront of the latest technologies allowing you work with the best solutions for your customers allowing you to have the utmost confidence we deliver the best. You will work on challenging projects where you will never be bored. We recognise team and individuals for their hard work and our Professional Development Program is envied by our competitors. Your team will constantly help you grow and support you in your career with Readify.
+
+About our Benefits:
+
+Professional Development program
+Monthly internet allowance
+Telstra staff-connect phone plan with unlimited calls and 15GB of Data
+Laptop allowance renewed every 2 years
+Purchased Annual Leave Scheme
+Discounted Telstra products and services
+How to Apply?
+
+If you want to be a part of an innovative, fast paced company with a transparent and trusting culture, then send us your resume and apply today.
+
+")
+
+text
+
+```
+
+
+```{r }
+for (skill in jobskills) {
+  print(skill)
+  print(lapply(skill, str_count, string=text))
+}
+
+
+```
+
+
+```{r }
+
+
+
+```
