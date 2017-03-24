@@ -18,7 +18,7 @@ jobskills <- c("Python","R","analytics","machine learning","programming","team",
 
 
 jobskills
-
+write.table(jobskills, "jobskills.txt", sep="\t")
 
 ```
 
@@ -26,64 +26,98 @@ jobskills
 ```{r }
 text <- c("
 
-Our Melbourne team is seeking a Data Scientist/Data Analyst Consultant to join our expanding team.
 
-At Readify, we help Australia's biggest organisations, government departments and not for profits manage and navigate shifts in technology. We only employ technically brilliant people to deliver custom Business Intelligence solutions, data platform and analytics services, application development, software deployment, IT consulting and managed services.
+Join a firm that values diversity & flexible working practices
 
-Our staff are industry superstars who regularly present locally and around the world ¡V a key reason Telstra recently acquired Readify!
+¡EEnergetic and Inspirational Team
 
-About the Role:
+¡EApply Assurance skills while being challenged to think laterally
 
-As a Data Scientist/Data Analyst Consultant, you'll provide our clients with an extremely high level of technical expertise regarding Data Analytics and Visualisation solutions, using SQL Server, Teradata, Oracle and PowerBI, Tableau, QlikView.
+ 
+If you have demonstrated strengths in visual communication and design, or business analytics, working at PwC can provide you with training and exposure in both delivery of business insight and assurance to give you the opportunity to build out your skills and position yourself for a highly rewarding career.
+ 
+PwC is a firm committed to collaboration and strong relationships that help our clients and our people realise their ambitions. Well known for our technical excellence, we are also a firm brimming with energetic and inspirational people who want to build a diverse and enduring career in a progressive, global network.
 
-You'll also be helping our customers utilising NoSQL offerings and big data solutions to optimise the design and implementation of their solutions. You'll be involved in the full lifecycle of BI and Data projects from attending client briefings, translating business requirements into the architecture and design of solutions, and following through to their implementation and deployment.
+About the role:
+PwC's Assurance practice provides assurance on the financial performance and operations of businesses and is the world¡¦s leading practice of its kind. We are making significant investments in techniques and technologies to equip our Assurance staff with the best tools and processes in the market.
+Due to the ongoing success of the group, we're looking for an experienced Senior Consultant to join the team in Perth. Reporting to a Data Analytics Manager and Partner, the Senior Consultant will build client relationships and deliver work of value to our clients. As a member of our team, you would be key in the engagement and delivery of bespoke analytic projects and a leader for us in the development of our data visualisation practices; at the same time building a range of business and technical skills to become a well-rounded Data Scientist.
+ 
+Using innovative software you will provide broader assurance and deeper insights to some of the leading organisations in Australia. 
+ 
+You will have the opportunity to use a creative, entrepreneurial and consulting mind set to revolutionise the way our work is performed and our findings are delivered to clients. 
 
-You'll also be doing highly technical work assisting our clients in optimising the scalability and performance of their existing solutions, and expanding on those solutions to add greater insights, visualisation and understanding of the data they are storing.
+ We are working to transform PwC's Assurance practice, using data analytics to gain better business insights for our clients and an improved engagement experience for our clients and our people. 
+ We are employing leading data visualisation techniques (using tools such as Qlik, and Tableau) in the presentation of our analytical outputs. Our projects cover a wide range of business contexts and give our people exposure to business leaders and decision makers from an early stage in their career.
+ 
+Skills/experience required:
+¡EExcellent verbal and written communication skills
 
-With a passion for technology, business and problem solving, you'll have the opportunity to develop your skills with the latest, cutting edge Microsoft and NoSQL technologies whilst working alongside and learning from talented Microsoft Most Valuable Professionals (MVPs).
+¡EExisting strong expertise and demonstrated passion in Data Visualisation and/or Visual design
 
-As a Data Scientist/Data Analyst Consultant, your duties will include:
+¡EExperience working with data across several enterprise information platforms, specifically extracting and cleansing data
 
-Being proficient in all pillars of the Microsoft data platform offering, including Azure technologies.
-Becoming proficient in a range of NoSQL based offerings, such as graph databases and Azure HDInsights, and modelling and building solutions using those offerings.
-Configuring, Developing, Optimising, Testing, and Documenting analytical solutions developed and/or infrastructure implemented.
-Gathering Requirements from Business and IT Stakeholders.
-Delivering and installing suitable solutions for customers.
-Actively participating in local technical forums, such as User Groups, involving Microsoft and their wider Developer community.
-About You:
+¡EHigh level of proficiency in Excel
 
-You should have proven expertise with Microsoft data platform products in a similar role as a Data Scientist/Data Analyst, BI Consultant, SQL Server Developer or Architect, and you should have some level of working knowledge around big data solutions.
+¡EExperience in SQL would be a key advantage but not essential if you have a demonstrated flair for data visualisation and problem solving and willingness to learn and become proficient in ACL, Alteryx and/or SQL.
 
-Ideally your skillset will also include:
+¡EExperience working in a finance orientated area is beneficial 
 
-Advanced T-SQL and SQL Server 2012+, including Azure SQL
-Advanced R and/or Python skills
-Proven proficiency in statistics and statistical modelling
-Exposure to and understanding of Pig, Hive and Jaql
-PowerBI (Highly Beneficial)
-Tableau (Highly Beneficial)
-QlikView (Beneficial)
-SSAS Tabular Modelling (Beneficial)
-Data Analysis Expressions (DAX) (Beneficial)
-Azure HDInsights and/or Hadoop and related technologies (Highly Beneficial)
-Machine learning and/or data mining (Beneficial)
-IoT, data ingestion, and stream analytics (Beneficial)
-Working as part of a Scrum development team
-About our Culture:
+¡EA degree-level qualification in a ¡¥quantitative¡¦ field such as; Engineering, Econometrics, Applied Mathematics, Science, Finance or Commerce; or alternatively a qualification in ¡¥Computer Science¡¦ or ¡¥Computer Engineering¡¦, would be advantageous. Or a degree-level qualification in Design with subsequent study showing an interest and commitment to STEM fields.
 
-Our people enjoy working at Readify because we stay at the forefront of the latest technologies allowing you work with the best solutions for your customers allowing you to have the utmost confidence we deliver the best. You will work on challenging projects where you will never be bored. We recognise team and individuals for their hard work and our Professional Development Program is envied by our competitors. Your team will constantly help you grow and support you in your career with Readify.
+¡EUnderstanding of basic business processes
 
-About our Benefits:
+¡EExperience managing concurrent work streams/deliverables
 
-Professional Development program
-Monthly internet allowance
-Telstra staff-connect phone plan with unlimited calls and 15GB of Data
-Laptop allowance renewed every 2 years
-Purchased Annual Leave Scheme
-Discounted Telstra products and services
-How to Apply?
 
-If you want to be a part of an innovative, fast paced company with a transparent and trusting culture, then send us your resume and apply today.
+ 
+
+Key behaviours required:
+
+ 
+¡EDrive and enthusiasm ¡V energetic, motivated and passionate about the Firm and the role
+
+¡ECapacity and willingness to share your expertise and teach others
+
+¡EProfessionalism ¡V professional approach, confidentiality, in line with the Firm¡¦s guidelines
+
+¡ECommunication skills ¡V able to communicate effectively with internal and external clients
+
+¡EStrong attention to detail
+
+¡EResilient - able to handle high levels of conflict and pressure, whilst remaining calm
+
+¡EWilling to have a go, try new things and be creative 
+
+
+Ability to work autonomously and as part of a team
+
+ 
+
+The offer at PwC: 
+
+ 
+
+PwC is one of Australia's leading professional services firms, bringing the power of our global network of firms in 157 countries to help Australian businesses, not-for-profit organizations and governments assess their performance and improve the way they work. 
+ 
+
+ The PwC Australia experience will offer you the opportunity to work with the best people and technology, flexible working arrangements and activity based working, a diverse workplace and embedded cultural values in everything we do. We offer reward and recognition for your efforts so you can realize your potential through coaching and career development.
+
+Diversity:
+
+We work in a changing world which offers great opportunities for people with diverse backgrounds and experiences. We seek to attract and employ the best people from the widest talent pool as well as those who reflect the diverse nature of our society. And we aim to encourage a culture where people can be themselves and be valued for their strengths. This is why we¡¦re committed to conversations about flexibility that work for you and our clients. Creating value through diversity iswhat makes us strong as a business. http://www.pwc.com.au/about-us/diversity-and-inclusion
+
+ 
+
+Next step:
+
+ 
+Ready for the opportunity of a lifetime? Apply online now - http://www.pwc.com.au/careers/index.htm
+ 
+
+
+
+c 2015 PwC. All rights reserved. PwC refers to the PwC network and/or one or more of its member firms, each of which is a separate legal entity. Please see www.pwc.com/structure for further details.
+
 
 ")
 
