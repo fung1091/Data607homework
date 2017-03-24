@@ -1,0 +1,81 @@
+---
+title: "607project3draft1"
+author: "jim lung"
+date: "03-21-2017"
+output: html_document
+---
+```{r }
+library(RCurl)
+library(stringr)
+library(XML)
+library(rjson)
+library(bitops)
+library(rvest)
+```
+
+# error from HTML to get script JSON data
+```{r }
+library(jsonlite)
+booksJson <- getURL("https://www.seek.com.au/job/33045635?format=json")
+booksJsonDF<-fromJSON(booksJson)
+booksJsonDF
+
+```
+
+# scrapping from web
+```{r}
+
+autext <- 'https://www.seek.com.au/data-scientist-jobs?format=text'
+autext <- readLines(autext,encoding="UTF-8")
+
+
+scriptref <- unlist(str_extract_all(autext, '<script type="application/ld+json".+</script>'))
+scriptref
+jobid <-unlist(str_extract_all(autext,'"<article aria-label=".+"class"'))
+jobid 
+
+
+```
+
+
+```{r }
+
+library(stringr)
+
+autext <- 'https://www.seek.com.au/job/33045635'
+autext <- readLines(autext,encoding="UTF-8")
+
+title <-unlist(str_extract_all(autext,'<h1 class="jobtitle">.+</h1>'))
+title
+salary <-unlist(str_extract_all(autext,'<div itemprop="baseSalary">.+/div>'))
+salary
+subtitle <-unlist(str_extract_all(autext,'<title>.+</title>'))
+subtitle
+location <-unlist(str_extract_all(autext,'<span itemprop="addressLocality" data-automation="apply_text_location_area">.+</span>'))
+location
+jobduty <-unlist(str_extract_all(autext,'<strong>Key Responsibilities include but not limited to:</strong><br/></p><ul>.+</li></ul>'))
+jobduty
+qualification <-unlist(str_extract_all(autext,'<strong>What are we looking for?</strong><br/></p><ul><li>.+</li></ul>
+'))
+qualification
+
+
+
+
+```
+
+
+
+# fromjson 
+```{r }
+urlfn <- function(i) {
+    url <- paste("https://www.seek.com.au/data-scientist-jobs?page=",i,sep="")
+    return(url)
+}
+mainUrls <- sapply(0:15, urlfn)
+mainUrls
+
+booksJson <- getURL(mainUrls)
+booksJsonDF<-fromJSON(booksJson)
+booksJsonDF
+```
