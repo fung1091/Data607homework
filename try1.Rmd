@@ -1,0 +1,124 @@
+---
+title: "Untitled"
+author: "jim lung"
+date: "2017¦~3¤ë24¤é"
+output: html_document
+---
+
+```{r }
+
+library(bitops)
+library(RCurl)
+library(jsonlite)
+library(stringr)
+library(XML)
+library(xml2)
+library(readr)
+```
+
+```{r }
+
+urlfn <- function(i) {
+  url <- paste("https://www.seek.com.au/data-scientist-jobs?page=", i, sep="")
+  return(url)
+}
+mainURL <- sapply(1:2, urlfn)
+mainURL
+URLContent <- getURL(mainURL)
+class(URLContent)
+```
+
+```{r }
+
+jsonNodes <- getNodeSet(htmlParse(URLContent), "//script[@type='application/ld+json']")
+jsonNodes
+class(jsonNodes)
+
+```
+
+```{r }
+table<-sapply(jsonNodes,xmlValue)
+
+url <- unlist(str_extract_all(table, 'www.+[0-9]'))
+
+datePosted <- unlist(str_extract_all(table, '20..-..-..'))
+
+description <-unlist(str_extract_all(table, 'description.+employment')) 
+description <- str_replace_all(description, pattern = "\"|employment",replacement = "")
+
+
+employmentType <-unlist(str_extract_all(table, 'employmentType.+hiringOrganization'))
+employmentType <-str_replace_all(employmentType, pattern = "employmentType\":\"|\",\"hiringOrganization",replacement = "")
+
+addressRegion <-unlist(str_extract_all(table, 'addressRegion.+title'))
+addressRegion <-str_replace_all(addressRegion, pattern = "addressRegion\":\"|,\"title",replacement = "")
+addressRegion <-unlist(str_extract_all(addressRegion, '[a-zA-Z]+'))
+
+title <-unlist(str_extract_all(table, 'title.+url'))
+title <-str_replace_all(title, pattern = "title\":\"|\",\"url",replacement = "")
+
+```
+
+```{r }
+aujobs<- data.frame(url = url,
+                       datePosted = datePosted,
+                       title = title,
+                       employmentType = employmentType,
+                       description = description,
+                       addressRegion = addressRegion,
+                       stringsAsFactors = FALSE)
+View(aujobs)
+
+```
+
+
+```{r }
+
+
+# jobskills <- c("Python","R","analytics","machine learning","programming","team","statistics","SQL","sql","communication","big data","design","Hadoop","Java","research","creative","math","mathematic","MATLAB","predictive analytics","SAS","Modelling","C++","builders at heart","experienced","outgoing","self-motivated professional","creating analytics programs","thought leadership" )
+
+jobskills <- c("Python"," R ","analytics","leadership","programming")
+
+for (skill in jobskills) {
+  print(skill)
+  print(lapply(skill, str_count, string=text))
+}
+print(text)
+
+
+counter <- 1
+
+sub_df <- data.frame(counter, "xyz", "abd", 1)
+names(sub_df) <- c("1", "2", "3", "4")
+
+df_list <- sapply(Suburls, function(suburl){
+  text <- readLines(suburl)
+  text <- str_c(text, collapse = "")
+  # row <- c(counter, suburl, "abd", 1)
+  sub_df2 <- data.frame(counter, suburl, "abd", 1)
+  names(sub_df2) <- c("1", "2", "3", "4")
+  # print(sub_df)
+  for (skill in jobskills) {
+  # print(skill)
+  # print(lapply(skill, str_count, string=text))
+    counter <-  counter + 1
+    count <- lapply(skill, str_count, string=text)
+    # row <- c(counter, suburl, skill, count)
+    sub_df1 <- data.frame(counter, suburl, skill, count)
+    names(sub_df1) <- c("1", "2", "3", "4")
+    sub_df2<- rbind(sub_df2, sub_df1)
+   #  list(sub_df = sub_df)
+    # print(sub_df)
+  }
+  return(sub_df2)
+})
+#print(sub_df)
+#dim(sub_df)
+length(df_list)
+suf_list <- rbind(df_list)
+print(suf_list)
+
+
+```
+
+
