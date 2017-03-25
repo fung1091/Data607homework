@@ -1,7 +1,7 @@
 ---
 title: "Untitled"
 author: "jim lung"
-date: "2017¦~3¤ë24¤é"
+date: "03-24-2017"
 output: html_document
 ---
 
@@ -36,6 +36,7 @@ class(jsonNodes)
 
 ```
 
+# Scrapping from seek
 ```{r }
 table<-sapply(jsonNodes,xmlValue)
 
@@ -58,7 +59,7 @@ title <-unlist(str_extract_all(table, 'title.+url'))
 title <-str_replace_all(title, pattern = "title\":\"|\",\"url",replacement = "")
 
 ```
-
+# Create new table 
 ```{r }
 aujobs<- data.frame(url = url,
                        datePosted = datePosted,
@@ -71,7 +72,7 @@ View(aujobs)
 
 ```
 
-
+# For loop still not working
 ```{r }
 
 
