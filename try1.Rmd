@@ -41,22 +41,27 @@ class(jsonNodes)
 table<-sapply(jsonNodes,xmlValue)
 
 url <- unlist(str_extract_all(table, 'www.+[0-9]'))
+url
 
 datePosted <- unlist(str_extract_all(table, '20..-..-..'))
+datePosted
 
 description <-unlist(str_extract_all(table, 'description.+employment')) 
 description <- str_replace_all(description, pattern = "\"|employment",replacement = "")
-
+description
 
 employmentType <-unlist(str_extract_all(table, 'employmentType.+hiringOrganization'))
 employmentType <-str_replace_all(employmentType, pattern = "employmentType\":\"|\",\"hiringOrganization",replacement = "")
+employmentType
 
 addressRegion <-unlist(str_extract_all(table, 'addressRegion.+title'))
 addressRegion <-str_replace_all(addressRegion, pattern = "addressRegion\":\"|,\"title",replacement = "")
 addressRegion <-unlist(str_extract_all(addressRegion, '[a-zA-Z]+'))
+addressRegion
 
 title <-unlist(str_extract_all(table, 'title.+url'))
 title <-str_replace_all(title, pattern = "title\":\"|\",\"url",replacement = "")
+title
 
 ```
 # Create new table 
@@ -72,7 +77,8 @@ View(aujobs)
 
 ```
 
-# For loop still not working
+# For loop
+
 ```{r }
 
 
@@ -82,7 +88,7 @@ jobskills <- c("Python"," R ","analytics","leadership","programming")
 
 for (skill in jobskills) {
   print(skill)
-  print(lapply(skill, str_count, string=text))
+  print(lapply(skill, str_count, string=description))
 }
 print(text)
 
@@ -92,11 +98,11 @@ counter <- 1
 sub_df <- data.frame(counter, "xyz", "abd", 1)
 names(sub_df) <- c("1", "2", "3", "4")
 
-df_list <- sapply(Suburls, function(suburl){
-  text <- readLines(suburl)
+df_list <- sapply(url, function(url){
+  text <- getURL(url)
   text <- str_c(text, collapse = "")
-  # row <- c(counter, suburl, "abd", 1)
-  sub_df2 <- data.frame(counter, suburl, "abd", 1)
+  # row <- c(counter, url, "abd", 1)
+  sub_df2 <- data.frame(counter, url, "abd", 1)
   names(sub_df2) <- c("1", "2", "3", "4")
   # print(sub_df)
   for (skill in jobskills) {
@@ -104,8 +110,8 @@ df_list <- sapply(Suburls, function(suburl){
   # print(lapply(skill, str_count, string=text))
     counter <-  counter + 1
     count <- lapply(skill, str_count, string=text)
-    # row <- c(counter, suburl, skill, count)
-    sub_df1 <- data.frame(counter, suburl, skill, count)
+    # row <- c(counter, url, skill, count)
+    sub_df1 <- data.frame(counter, url, skill, count)
     names(sub_df1) <- c("1", "2", "3", "4")
     sub_df2<- rbind(sub_df2, sub_df1)
    #  list(sub_df = sub_df)
@@ -121,5 +127,7 @@ print(suf_list)
 
 
 ```
+
+
 
 
