@@ -1,0 +1,101 @@
+---
+title: "Untitled"
+author: "jim lung"
+date: "2017¦~3¤ë25¤é"
+output: html_document
+---
+
+```{r}
+install.packages("tidyverse")
+```
+
+```{r}
+library(bitops)
+library(RCurl)
+library(jsonlite)
+library(stringr)
+library(dplyr)
+library(plyr)
+library(XML)
+# library(XML) for getNodeset function
+
+urlfn <- function(i) {
+  url <- paste("https://www.seek.com.au/data-scientist-jobs?page=", i, sep="")
+  return(url)
+}
+mainURLs <- sapply(3:3, urlfn)
+
+# Main Table
+allPagesCtr <- 1
+mainURL <- mainURLs[2]
+mainURL
+for(mainURL in mainURLs) {
+  print(paste0("Processing Page ",allPagesCtr))
+  mainContent <- getURL(mainURL)
+  jsonNodes <- getNodeSet(htmlParse(mainContent), "//script[@type='application/ld+json']/text()")
+  len <- length(jsonNodes)
+  # jl <- c()
+  # i<-1
+  # for(node in jsonNodes) {
+  #   json <- unlist(sapply(node, xmlValue))
+  #   #json
+  #   jl[[i]] <- json
+  #   i<-i+1
+  # }
+  # jsonNodes<- jl
+  # class(jl)
+  # #jsonNodes <- sapply(jsonNodes, xmlValue)
+  #class(jsonNodes)
+  #jsonNodes <- unlist(sapply(jsonNodes,xmlValue))
+  #class(jsonNodes)
+  #mainDF <- ldply(jsonNodes, function(jsonNode) {
+  #listC <- c(1:13,16:20, 22:23,25:len)
+  listC <- c(1:13,16:20)
+  mainDF <- ldply(listC, function(i) {
+    print(i)
+    #class(jsonNodes[[1]])
+    jsonNode<-jsonNodes[i]
+    json <- unlist(sapply(jsonNode,xmlValue))
+    #jsList <- tryCatch(fromJSON(json), error = function(e) next)
+    jsList <- fromJSON(json)
+    mainDF1 <- data.frame(as.character(jsList$url), jsList$title, jsList$hiringOrganization$name, jsList$jobLocation$address$addressRegion, jsList$datePosted, "NA", "NA")
+  colnames(mainDF1) <- c("detailUrl",  "jobTitle",   "company",    "location",   "date",       "Salary From", "Salary To")
+    return (mainDF1)
+  })
+
+  
+  colnames(mainDF) <- c("detailUrl",  "jobTitle",   "company",    "location",   "date",       "Salary From", "Salary To")
+  #mainDF
+  # Sub Table
+  
+  jobskills <- c("Python"," R ","analytics","leadership","programming")
+  Suburls <- mainDF$detailUrl 
+  class(Suburls[1])
+  mainCtr <- 1
+  subdf <- ldply(Suburls, function(suburl) {
+    df1 <- data.frame(matrix(ncol = 4, nrow = 5))
+    colnames(df1) <- c("Id", "SubUrl", "Skill", "Count")
+    suburl <- as.character(suburl)
+    text <- readLines(suburl)
+    text
+    text <- str_c(text, collapse = "")
+    countr<- 1
+    for (skill in jobskills) {
+      skillcount <- lapply(skill, str_count, string=text)
+      df1[countr,1] <- mainCtr
+      df1[countr,2] <- suburl
+      df1[countr,3] <- skill
+      df1[countr,4] <- skillcount
+      mainCtr <<-  mainCtr + 1
+      countr <- countr + 1
+    }
+    df1
+  })
+  #class(subdf)
+  #names(subdf)
+  allPagesCtr <<- allPagesCtr + 1
+  combinedDF <- inner_join(x=mainDF, y=subdf, by=c("detailUrl" = "SubUrl") )
+  print(paste0("Created CombinedDF with dimensions=",dim(combinedDF)))
+  write.csv(combinedDF, file = "Jobs1.csv", append=TRUE)
+}
+```
