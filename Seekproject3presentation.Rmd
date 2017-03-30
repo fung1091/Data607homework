@@ -1,0 +1,60 @@
+---
+title: "DATA 607Project 3 Presentation"
+author: "jim lung"
+date: "03-30-2017"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## What is the most important skills required for Data Scientists?
+
+<center>![picture](C:\Users\voyo\Documents\DATA607project3\11.jpg)</center>
+
+## Method of Scraping web data
+
+- HTML Format ¡V htmlparse & getURL
+- JSON Format ¡V fromJSON
+- Xml Format ¡V getURL
+
+<h2>Seek ¡V Json script in HTML file</h2>
+
+<center>![picture](C:\Users\voyo\Documents\DATA607project3\12.jpg)</center>
+
+## Program Structure
+
+<center>![picture](C:\Users\voyo\Documents\DATA607project3\3.jpg)</center>
+
+
+## DataFrame
+Matching the relevant skills in requirement of each data scientists job 
+
+<center>![picture](C:\Users\voyo\Documents\DATA607project3\13.jpg)</center>
+
+## Aggregation
+Using ¡V aggregate function
+
+![picture](C:\Users\voyo\Documents\DATA607project3\14.jpg)
+![picture](C:\Users\voyo\Documents\DATA607project3\15.jpg)
+
+## Valued Skills - - Analysis
+Team, SQL, Python is the most important skill for data scientists
+
+![picture](C:\Users\voyo\Documents\DATA607project3\16.jpg)
+![picture](C:\Users\voyo\Documents\DATA607project3\17.jpg)
+
+
+##  Locations - Analysis
+Which cities have most number of jobs for data scientist in Australia?
+
+![picture](C:\Users\voyo\Documents\DATA607project3\18.jpg)
+
+
+## Sydney has most number of jobs - Analysis 
+Sydney in Australia has most number of jobs for data scientists.
+
+![picture](C:\Users\voyo\Documents\DATA607project3\19.jpg)
+![picture](C:\Users\voyo\Documents\DATA607project3\20.jpg)
+
