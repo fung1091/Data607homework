@@ -34,6 +34,7 @@ if (!require(utils)) install.packages('utils')
 
 ```{r}
 require(R.utils)
+require(RTextTools)
 
 download.file('http://spamassassin.apache.org/old/publiccorpus/20050311_spam_2.tar.bz2', destfile="spam_zip.tar.bz2")
 bunzip2("spam_zip.tar.bz2", remove = F, overwrite = T)
@@ -46,72 +47,80 @@ untar("ham_zip.tar") #creates easy_ham_2 folder
 
 ```
 
+
+
 ```{r}
-# identify extraneous ham file and delete
+# identify cmds file and delete
 removeham <- list.files(path="easy_ham_2/", full.names=T, recursive=FALSE, pattern="cmds")
 file.remove(removeham)
 
-# identify extraneous spam file and delete
+# identify cmds file and delete
 removespam <-list.files(path="spam_2/", full.names=T, recursive=FALSE, pattern="cmds")
 file.remove(removespam)
 
 ```
 
-```{r}
-# list of spam files
-spamfiles <-list.files(path="spam_2/", full.names=T, recursive=FALSE)
-
-# list of ham files
-hamfiles <- list.files(path="easy_ham_2/",full.names=T, recursive=FALSE)
-
-# concatenate ham and spam file lists
-hamspam <- c(hamfiles,spamfiles)
-
-length(hamspam)
-head(hamspam)
-
-```
+# Combined Spam and ham files
 
 ```{r}
 # Vcorpus input directory 2501 files
 spamfiles<-VCorpus(DirSource(directory = "spam_2/",encoding = "UTF-8"))
 hamfiles<-VCorpus(DirSource(directory = "easy_ham_2/",encoding = "UTF-8"))
-hamspam <- c(hamfiles,spamfiles)
+
+#Sample the spam & ham
+spamfiles <- sample(spamfiles, 250)
+hamfiles <- sample(hamfiles, 250)
+
+#Add meta labels
+meta(spamfiles, tag = "type") <- "spam"
+meta(hamfiles, tag = "type") <- "ham"
+
+#Combine corpus objects
+combinedspamham <- c(spamfiles,hamfiles,recursive=T)
+
+#Create randomized corpus
+spamham <- sample(combinedspamham)
+spamham
 ```
+# Checking by meta
 
 ```{r}
-meta(hamspam[[2]])
-
+meta(spamham[[2]])
 ```
+
+# Transforming
 
 ```{r}
 # remove white space
-hamspam <- tm_map(hamspam,stripWhitespace)
+spamham <- tm_map(spamham,stripWhitespace)
 
 # remove numbers
-hamspam <- tm_map(hamspam,removeNumbers)
+spamham <- tm_map(spamham,removeNumbers)
 
 # remove punctuations
-hamspam <- tm_map(hamspam,removePunctuation)
-hamspam[[1]][1]
+spamham <- tm_map(spamham,removePunctuation)
+
 
 ```
 
+# Transforming
 
 ```{r}
 # transform all words in corpus to lower case
-hamspam_mod <- tm_map(hamspam, content_transformer(tolower))
+spamham_mod <- tm_map(spamham, content_transformer(tolower))
 
 # remove all stop words 
-hamspam_mod <- tm_map(hamspam_mod,removeWords, words = stopwords("en"))
+spamham_mod <- tm_map(spamham_mod,removeWords, words = stopwords("en"))
 
 # stem words: cut certain terms down to word root
-hamspam_mod <- tm_map(hamspam_mod, stemDocument)
+spamham_mod <- tm_map(spamham_mod, stemDocument)
 
 ```
 
+# DocumentTermMatrix
+
 ```{r}
-dtm <- DocumentTermMatrix(hamspam_mod)
+dtm <- DocumentTermMatrix(spamham_mod)
 dtm
 
 
@@ -119,49 +128,54 @@ dtm
 
 # remove any terms less than 10 documents
 ```{r}
-dtm <- removeSparseTerms(dtm,1-(10/length(hamspam_mod)))
+dtm <- removeSparseTerms(dtm,1-(10/length(spamham_mod)))
 dtm
 
 ```
 
+# Classifier Models
 
 ```{r}
-length(hamspam_mod)
+#Collect meta labels
+spamtype <- unlist(meta(spamham_mod, "type")[,1])
+head(spamtype,5)
 ```
-`
-
-Classifier Models
+# Setup container
 
 ```{r}
-require(RTextTools)
-# create spam label vector for each email which indiciates actual status of "spam" or "not spam" 
-
-
-
-```
-
-
-
-
-# number of emails in corpus
-N <- length(hamspam_mod)
-
-# set up model container; 80/20 split between train and test data
+# set up model container; 90/10 split between train and test data
+N <- length(spamtype) # number of sample mail
 container <- create_container(
-    dtm,
-    labels = spam_labels,
-    trainSize = 1:(0.8*N),
-    testSize = (0.8*N+1):N,
-    virgin = FALSE
+  dtm,
+  labels = spamtype,
+  trainSize = 1:(0.9*N),
+  testSize = (0.8*N+1):N,
+  virgin = FALSE
 )
 
-svm_model <- train_model(container, "SVM")
-tree_model <- train_model(container, "TREE")
-maxent_model <- train_model(container, "MAXENT")
+slotNames(container)
+```
 
+# Modelling and anaylsis
+
+```{r}
+#Training models
+svm_model <- train_model(container, "SVM")
+rf_model <- train_model(container, "RF")
+maxent_model <- train_model(container, "MAXENT")
+TREE <- train_model(container,"TREE")
+
+# Test models
 svm_out <- classify_model(container, svm_model)
-tree_out <- classify_model(container, tree_model)
+rf_out <- classify_model(container, rf_model)
 maxent_out <- classify_model(container, maxent_model)
+tree_out <- classify_model(container, TREE)
+
+head(svm_out)
+head(rf_out)
+head(maxent_out)
+head(tree_out)
+```
 
 
 
