@@ -1,0 +1,37 @@
+---
+title: "discussion12"
+author: "jim lung"
+date: "04-19-2017"
+output: html_document
+---
+
+https://www.skyscanner.com
+
+1. Perform a Scenario Design analysis as described below.  Consider whether it makes sense for your selected recommender system to perform scenario design twice, once for the organization (e.g. skyscanner.com) and once for the organization's customers.
+ 
+Target users:
+
+The target users are direct customers, travellers, business travellers and travel agents.
+
+Key goals:
+
+To search required flight tickets, car rental, hotel booking by specific dates, times and number of travellers. We can search and compare the price provided by travel agents, even thought the exactly required ticket, car or hotel.
+
+How can the recommender system help them accomplish these goals?
+
+The system provides a clear list of travel packages from different agents, users can compare the details immediately, including, date and time of flights, the duration comparison, price lists and even remaining seats. More important, users can order and book thought their platform provided. 
+ 
+2. Attempt to reverse engineer what you can about the site, from the site interface and any available information that you can find on the Internet or elsewhere.
+
+At the main page, the sections are separated into flights, car rental and hotels, when input the relative information for the trips, such as location from and to, date, the output travel information will be generated from over 1200 business partners.
+
+For the part of partners, it provides partner analytics, travel APIs and page of developers. It provides travel API allowed to connect other business partners to all the data to build an website or app to get information on flights, hotels or car hire and provide travel solutions or intergrated together. 
+
+3. Include specific recommendations about how to improve the site's recommendation capabilities going forward.
+
+The flight ticket, car hire and hotels are separated into three different platform for algorithm from the information providers. In the system can make more link or connection between these three area, the users search the flight tickets and show the special promotion for car hire and hotels at the same times. 
+
+
+
+
+ 
