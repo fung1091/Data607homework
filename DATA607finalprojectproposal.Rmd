@@ -1,0 +1,40 @@
+---
+title: "DATA607finalprojectproposal"
+author: "jim lung"
+date: "04-21-2017"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    
+---
+
+#Introduction
+
+In 2017, some financial companies uses advanced algorithms from data analystic to conduct 100% automatic finacial trading instead of human trading and analysis. I think this project is a good opportunity to help me figure out the relationship between different stock wave.
+
+How the wave of Nasdaq index are affected by Amazon and Facebook?
+
+#Research Questions
+To explore how the wave of Nasdaq index are affected by Amazon and Facebook, I want to break down to different topics about the financial markets.
+
+The statistics of daily historical stock prices & volumes for one year under this category, I will compare from Nasdaq index, Amazon and Facebooks.
+
+The mainly resource I will use is http://www.nasdaq.com
+
+#Proposed Sources
+Both for short term and long term analysis, the related stock news will be used for analysis by sentiments in order to match for complexity.
+
+Data scraping
+http://www.nasdaq.com/symbol/ndaq/historical
+http://www.nasdaq.com/symbol/amzn/historical
+
+Data sentiments
+http://www.nasdaq.com/symbol/amzn/news-headlines
+
+
+#Proposed Methodology
+The visualization of data is to compare the wave and pattern of trend for Nasdaq. 
+Use R¡¦s tm package to create corpora and execute a corpus cleaning algorithm 
+Attempt various combinations of classification algorithms using RTextTools
+sentiment analysis
