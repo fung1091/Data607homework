@@ -4,26 +4,17 @@ author: "jim lung"
 date: "04-28-2017"
 output: html_document
 ---
-For this assignment, you should take information from a relational database and migrate it to a NoSQL database of your own choosing. 
-
-For the relational database, you might use the flights database, the tb database, the "data skills" database your team created for Project 3, or another database of your own choosing or creation.
 
 For the NoSQL database, you may use MongoDB (which we introduced in week 7), Neo4j, or another NoSQL database of your choosing.
-
-Your migration process needs to be reproducible.  R code is encouraged, but not required.  You should also briefly describe the advantages and disadvantages of storing the data in a relational database vs. your NoSQL database.
-
 
 
 ```{r}
 library(RMySQL)
+library(RNeo4j)
 
-#flights_db <- dbConnect(MySQL(), user = "root", password = "hild1024", dbname = "flights", host = "localhost")
 ```
 
-```{r}
-if (!require("RMySQL")) install.packages('RMySQL')
-if (!require('RNeo4j')) install.packages('RNeo4j')
-```
+# load Data from SQL to R
 
 ```{r}
 mydb <- dbConnect(MySQL(), user="root", dbname="flights", password = "hild1024", host="localhost")
@@ -35,48 +26,23 @@ airports <- dbGetQuery(conn = mydb, statement =
 flights <- dbGetQuery(conn = mydb, statement = 
                           "SELECT * FROM flights")
 
+# Decrease the sample loading to 2000
 flights <- flights[1:2000,]
 airports <- airports[airports$faa %in% flights$dest | airports$faa %in% flights$origin, ]
 
 dbDisconnect(mydb)
 ```
 
-
+# load data from R to Neo4j
 
 ```{r}
-
 graph = startGraph("http://localhost:7474/db/data/", username = "neo4j", password = "password")
 clear(graph, input = FALSE)
-
 ```
 
+# Setting Node for Airport
 ```{r}
-addConstraint(graph, "Airline", "carrier")
-
-query1 <- "
-CREATE (a:Airline {carrier: {carrier}, name: {name}})
-"
-
-t = newTransaction(graph)
-
-for (i in 1:nrow(airlines)) {
-  carrier = airlines$carrier[i]
-  name = airlines$name[i]
-
-  appendCypher(t, 
-               query1, 
-               carrier = carrier, 
-               name = name)
-}
-
-commit(t)
-
-```
-
-```{r}
-query2 <- "
-CREATE (b:Airport {faa: {faa}, name: {name}})
-"
+query1 <- "CREATE (a:Airport {faa: {faa}, name: {name}})"
 
 t = newTransaction(graph)
 
@@ -85,19 +51,16 @@ for (i in 1:nrow(airports)) {
   name = airports$name[i]
 
   appendCypher(t, 
-               query2, 
+               query1, 
                faa = faa, 
                name = name)
 }
-
 commit(t)
 ```
 
+# Setting Node for Flight
 ```{r}
-query3 <- '
-CREATE (c:Flight {name: {name}, carrier: {carrier}, 
-origin: {origin}, dest: {dest}})
-'
+query2 <- "CREATE (b:Flight {name: {name}, carrier: {carrier}, origin: {origin}, dest: {dest}})"
 
 t = newTransaction(graph)
 
@@ -108,19 +71,19 @@ for (i in 1:nrow(flights)) {
   dest = flights$dest[i]
 
   appendCypher(t, 
-               query3, 
+               query2, 
                name = name, 
                carrier = carrier,
                origin = origin,
                dest = dest)
 }
-
 commit(t)
 
 ```
 
+# Setting relationship between node
 ```{r}
-query5 <- '
+query3 <- '
 MATCH (a:Flight) WHERE a.dest={dest} AND a.name={fnum}
 MATCH (b:Airport) WHERE b.faa={dest}
 CREATE (a) -[r:Destination {arr_time:{arr_time}}] -> (b)
@@ -134,7 +97,7 @@ for (i in 1:nrow(flights)) {
   arr_time = flights$arr_time[i]
 
   appendCypher(t, 
-               query5, 
+               query3, 
                fnum = fnum,
                dest = dest, 
                arr_time = arr_time)
@@ -142,3 +105,18 @@ for (i in 1:nrow(flights)) {
 commit(t)
 
 ```
+
+Visualization
+
+![picture](C:\Users\voyo\Documents\DATA607\1.jpg)
+
+# advantages and disadvantages of storing the data in a relational database vs. NoSQL database
+
+A NoSQL database lets you build an application without having to define the schema first unlike relational databases which make you define your schema before you can add any data to the system. 
+
+Relational databases were built in an era where data was fairly structured and clearly defined by their relationships.
+
+NoSQL databases are open source whereas relational databases typically are closed source with licensing fees baked into the use of their software.
+
+
+
